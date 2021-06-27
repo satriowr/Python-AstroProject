@@ -42,6 +42,10 @@ while True :
                 if all(sign_status) :
                     cv2.putText(img, "minum", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2,(0,0,255),2)
                     print("minum")
+                
+                elif lm_list[jempol_sign].y > lm_list[jempol_sign - 1].y > lm_list[jempol_sign - 2].y :
+                    cv2.putText(img, "MAKAN", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
+                    print("MAKAN")
 
             mp_draw.draw_landmarks(img, hand_landmark,
                                    mp_hands.HAND_CONNECTIONS,

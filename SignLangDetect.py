@@ -43,9 +43,20 @@ while True :
                     cv2.putText(img, "minum", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2,(0,0,255),2)
                     print("minum")
                 
-                elif lm_list[jempol_sign].y > lm_list[jempol_sign - 1].y > lm_list[jempol_sign - 2].y :
-                    cv2.putText(img, "MAKAN", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
-                    print("MAKAN")
+                elif sign_status == [True, True, True, False]:
+                    if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
+                        cv2.putText(img, "MAKAN", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
+                        print("MAKAN")
+            
+                elif sign_status == [False, True, True, True]:
+                    if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
+                        cv2.putText(img, "PIPIS", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
+                        print("PIPIS")
+            
+                elif sign_status == [False, False, True, True]: 
+                    if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
+                        cv2.putText(img, "BERAK", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
+                        print("BERAK")
 
             mp_draw.draw_landmarks(img, hand_landmark,
                                    mp_hands.HAND_CONNECTIONS,

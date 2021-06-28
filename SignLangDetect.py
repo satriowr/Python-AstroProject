@@ -12,7 +12,7 @@ jempol_sign = 4
 
 while True :
     ret, img, = cap.read()
-    img = cv2.flip(img, 1)
+    # img = cv2.flip(img, 1) #flip Image
     h, w, c = img.shape
     results = hands.process(img)
 

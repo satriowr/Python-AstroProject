@@ -6,42 +6,47 @@ import time
 import pyrebase
 from datetime import datetime
 
+#config Firebase
 config = {
-    "apiKey": "AIzaSyBDAO4FhnbHxBl9mAlgUFNySYqJrrSOTq4",
-    "authDomain": "latihanfirebase-d6bfc.firebaseapp.com",
-    "databaseURL": "https://latihanfirebase-d6bfc-default-rtdb.firebaseio.com",
-    "projectId": "latihanfirebase-d6bfc",
-    "storageBucket": "latihanfirebase-d6bfc.appspot.com",
-    "serviceAccount": "D:\satrio\Python-SignLangDetection\serviceKey.json"
+    "apiKey" : "AIzaSyDkFn3LdpjPly4w31eL6CAQIktzSclaMg0",
+    "authDomain" : "astroapp-cbf26.firebaseapp.com",
+    "databaseURL" : "https://astroapp-cbf26-default-rtdb.firebaseio.com",
+    "projectId" : "astroapp-cbf26",
+    "storageBucket" : "astroapp-cbf26.appspot.com",
+    "serviceAccount" : "D:\satrio\Python-SignLangDetection\serviceAccAstro.json"
 }
 
-firebase_strorage = pyrebase.initialize_app(config)
-storage = firebase_strorage.storage()
+firebaseConnect = pyrebase.initialize_app(config)
+# storage = firebase_strorage.storage()
+db = firebaseConnect.database()
 
+#declare
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 mp_draw = mp.solutions.drawing_utils
 cap = cv2.VideoCapture(0)
-directory = r'D:\satrio\Python-SignLangDetection\output' #output
+# directory = r'D:\satrio\Python-SignLangDetection\output' #output
 signGesture = [8, 12, 16, 20]
 jempol_sign = 4
+now = datetime.now() 
+time_stamp = now.strftime("%d-%m-%Y %H-%M-%S")
+timeNow = now.strftime("%H-%M")
 
-os.chdir(directory)
+# os.chdir(directory) #output Path
 
+#Sign Language Logic
 while True :
     ret, img, = cap.read()
     # img = cv2.flip(img, 1)
     h, w, c = img.shape
     results = hands.process(img)  
-    now = datetime.now() 
-    time_stamp = now.strftime("%d-%m-%Y %H-%M-%S")
-
+    
     if results.multi_hand_landmarks :
         for hand_landmark in results.multi_hand_landmarks :
             lm_list = []
             for id, lm in enumerate(hand_landmark.landmark) :
                 lm_list.append(lm)
-            
+
             sign_status = []
 
             for sign in signGesture :
@@ -63,33 +68,62 @@ while True :
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
                     cv2.putText(img, "MINUM", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("MINUM")
-                    fileName = f'minum_{time_stamp}.jpg'
-                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
-                    storage.child(fileName).put(fileName)
+                    # fileName = f'minum_{time_stamp}.jpg'
+                    # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
+                    # storage.child(fileName).put(fileName)
+
+                    dataset = {
+                        'nama_aktivitas' : 'Minum',
+                        'Jam' : timeNow
+                    }
+
+                    db.push(dataset)
+                    time.sleep(5)
 
             elif sign_status == [True, True, True, False]:
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
                     cv2.putText(img, "MAKAN", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("MAKAN")
-                    fileName = f'makan_{time_stamp}.jpg'
-                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
-                    storage.child(fileName).put(fileName)
+                    # fileName = f'makan_{time_stamp}.jpg'
+                    # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
+                    # storage.child(fileName).put(fileName)
+
+                    dataset = {
+                        'nama_aktivitas' : 'Makan',
+                        'Jam' : timeNow
+                    }
+
+                    db.push(dataset)
             
             elif sign_status == [False, True, True, True]:
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
                     cv2.putText(img, "PIPIS", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("PIPIS")
-                    fileName = f'pipis_{time_stamp}.jpg'
-                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
-                    storage.child(fileName).put(fileName)
+                    # fileName = f'pipis_{time_stamp}.jpg'
+                    # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
+                    # storage.child(fileName).put(fileName)
+
+                    dataset = {
+                        'nama_aktivitas' : 'Pipis',
+                        'Jam' : timeNow
+                    }
+
+                    db.push(dataset)
             
             elif sign_status == [False, False, True, True]: 
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
                     cv2.putText(img, "PUP", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("PUP")
-                    fileName = f'pup_{time_stamp}.jpg'
-                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
-                    storage.child(fileName).put(fileName)
+                    # fileName = f'pup_{time_stamp}.jpg'
+                    # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
+                    # storage.child(fileName).put(fileName)
+
+                    dataset = {
+                        'nama_aktivitas' : 'Pup',
+                        'Jam' : timeNow
+                    }
+
+                    db.push(dataset)
             
             mp_draw.draw_landmarks(img, hand_landmark,
                                    mp_hands.HAND_CONNECTIONS,
@@ -101,5 +135,4 @@ while True :
     
     if cv2.waitKey(1) == ord('q') :
         break
-    
     

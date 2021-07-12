@@ -3,7 +3,20 @@ import cv2
 import mediapipe as mp
 import os
 import time
+import pyrebase
 from datetime import datetime
+
+config = {
+    "apiKey": "AIzaSyBDAO4FhnbHxBl9mAlgUFNySYqJrrSOTq4",
+    "authDomain": "latihanfirebase-d6bfc.firebaseapp.com",
+    "databaseURL": "https://latihanfirebase-d6bfc-default-rtdb.firebaseio.com",
+    "projectId": "latihanfirebase-d6bfc",
+    "storageBucket": "latihanfirebase-d6bfc.appspot.com",
+    "serviceAccount": "D:\satrio\Python-SignLangDetection\serviceKey.json"
+}
+
+firebase_strorage = pyrebase.initialize_app(config)
+storage = firebase_strorage.storage()
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
@@ -51,30 +64,32 @@ while True :
                     cv2.putText(img, "MINUM", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("MINUM")
                     fileName = f'minum_{time_stamp}.jpg'
-                    time.sleep(5)
-                    cv2.imwrite(fileName, img)
+                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
+                    storage.child(fileName).put(fileName)
 
             elif sign_status == [True, True, True, False]:
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
                     cv2.putText(img, "MAKAN", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("MAKAN")
                     fileName = f'makan_{time_stamp}.jpg'
-                    
-                    cv2.imwrite(fileName, img)
+                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
+                    storage.child(fileName).put(fileName)
             
             elif sign_status == [False, True, True, True]:
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
                     cv2.putText(img, "PIPIS", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("PIPIS")
                     fileName = f'pipis_{time_stamp}.jpg'
-                    cv2.imwrite(fileName, img)
+                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
+                    storage.child(fileName).put(fileName)
             
             elif sign_status == [False, False, True, True]: 
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
                     cv2.putText(img, "PUP", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255), 3)
                     print("PUP")
                     fileName = f'pup_{time_stamp}.jpg'
-                    cv2.imwrite(fileName, img)
+                    cv2.imwrite(fileName, img, [cv2.IMWRITE_JPEG_QUALITY(30)])
+                    storage.child(fileName).put(fileName)
             
             mp_draw.draw_landmarks(img, hand_landmark,
                                    mp_hands.HAND_CONNECTIONS,
@@ -82,8 +97,9 @@ while True :
                                    mp_draw.DrawingSpec((0, 255, 0), 4, 2)
                                    )
 
-    cv2.imshow("Sign Language", img)
+    cv2.imshow("ASTRO Sign Language", img)
     
     if cv2.waitKey(1) == ord('q') :
         break
+    
     

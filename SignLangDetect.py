@@ -71,14 +71,14 @@ while True :
                     # fileName = f'minum_{time_stamp}.jpg'
                     # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
                     # storage.child(fileName).put(fileName)
-
+                    db.child("Riwayat Aktivitas")
                     dataset = {
                         'nama_aktivitas' : 'Minum',
                         'Jam' : timeNow
                     }
 
                     db.push(dataset)
-                    time.sleep(5)
+                    # time.sleep(5)
 
             elif sign_status == [True, True, True, False]:
                 if lm_list[jempol_sign].y < lm_list[jempol_sign - 1].y < lm_list[jempol_sign - 2].y :
@@ -87,7 +87,7 @@ while True :
                     # fileName = f'makan_{time_stamp}.jpg'
                     # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
                     # storage.child(fileName).put(fileName)
-
+                    db.child("Riwayat Aktivitas")
                     dataset = {
                         'nama_aktivitas' : 'Makan',
                         'Jam' : timeNow
@@ -102,7 +102,7 @@ while True :
                     # fileName = f'pipis_{time_stamp}.jpg'
                     # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
                     # storage.child(fileName).put(fileName)
-
+                    db.child("Riwayat Aktivitas")
                     dataset = {
                         'nama_aktivitas' : 'Pipis',
                         'Jam' : timeNow
@@ -117,7 +117,7 @@ while True :
                     # fileName = f'pup_{time_stamp}.jpg'
                     # cv2.imwrite(fileName, img, [int (cv2.IMWRITE_JPEG_QUALITY), 30])
                     # storage.child(fileName).put(fileName)
-
+                    db.child("Riwayat Aktivitas")
                     dataset = {
                         'nama_aktivitas' : 'Pup',
                         'Jam' : timeNow
